@@ -19,7 +19,28 @@ exec 2> >(while read line; do echo "$(date +%Y-%m-%d::%H:%M:%S) :: $line"; done 
 # Prepend a timestamp to each line, send it to log and backout to stdout (via tee)
 exec > >(while read line; do echo "$(date +%Y-%m-%d::%H:%M:%S) :: $line"; done | tee -a ${LOG_FILE})
 
+# Another alternative (But it combines both stderr and stdout)
+# exec &> >(while read line; do echo "$(date +%Y-%m-%d::%H:%M:%S) :: $line"; done | tee -a ${LOG_FILE})
+
+
 # Add a demarcation point to show a new run of the script
 echo -e "###### NEW LOG ###### \n\n" >> ${LOG_FILE}.err
 echo -e "###### NEW LOG ###### \n\n" >> ${LOG_FILE}
+```
+
+### Trap
+
+Example:
+```
+#
+# Add to the top of your script so you can catch things like:
+#   * control + c
+#   * script exiting unintentionally
+#
+function cleanup() {
+    echo "Cleaning up"
+    rm /file/with/sensitiveinfo
+}
+
+trap cleanup SIGHUP SIGINT SIGTERM EXIT
 ```
