@@ -211,7 +211,7 @@ $ python -c "import platform; print(platform.dist());"
 ('Ubuntu', '14.04', 'trusty')
 ```
 
-#### If you are waiting on a command, let the user know somthings happening.
+### If you are waiting on a command, let the user know somthings happening.
 
 ```
 printf "Waiting for command to complete"
